@@ -5,22 +5,22 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export class ExampleCredentialsApi implements ICredentialType {
-	name = 'exampleCredentialsApi';
-	displayName = 'Example Credentials API';
+export class AbrechnungCredentialsApi implements ICredentialType {
+	name = 'abrechnungApi';
+	displayName = 'abrechnung 🧾 API';
 	properties: INodeProperties[] = [
 		// The credentials to get from user and save encrypted.
 		// Properties can be defined exactly in the same way
 		// as node properties.
 		{
-			displayName: 'User Name',
-			name: 'username',
+			displayName: 'Instance API URL (Backend)',
+			name: 'url',
 			type: 'string',
-			default: '',
+			default: 'https://demo.reiseabrechner.de/backend',
 		},
 		{
-			displayName: 'Password',
-			name: 'password',
+			displayName: 'API Key',
+			name: 'apiKey',
 			type: 'string',
 			typeOptions: {
 				password: true,
@@ -35,13 +35,8 @@ export class ExampleCredentialsApi implements ICredentialType {
 	authenticate: IAuthenticateGeneric = {
 		type: 'generic',
 		properties: {
-			auth: {
-				username: '={{ $credentials.username }}',
-				password: '={{ $credentials.password }}',
-			},
-			qs: {
-				// Send this as part of the query string
-				n8n: 'rocks',
+			headers: {
+				Authorization: '={{"Bearer " + $credentials.apiKey}}',
 			},
 		},
 	};
@@ -49,8 +44,17 @@ export class ExampleCredentialsApi implements ICredentialType {
 	// The block below tells how this credential can be tested
 	test: ICredentialTestRequest = {
 		request: {
-			baseURL: 'https://example.com/',
-			url: '',
+			baseURL: '={{$credentials.url}}',
+			url: '/auth/authenticated',
 		},
+		rules: [
+			{
+				type: 'responseCode',
+				properties: {
+					value: 204,
+					message: 'Expected response code to be 204',
+				},
+			},
+		],
 	};
 }

@@ -1,6 +1,8 @@
 services:
   n8n:
-    image: n8nio/n8n
+    build:
+      context: .
+      dockerfile: n8n.Dockerfile
     environment:
       - DB_TYPE=${DB_TYPE}
       - DB_POSTGRESDB_DATABASE=${DB_POSTGRESDB_DATABASE}

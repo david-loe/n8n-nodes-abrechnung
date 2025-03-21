@@ -1,19 +1,19 @@
 {
-  "name": "n8n-nodes-<...>",
+  "name": "n8n-nodes-abrechnung",
   "version": "0.1.0",
-  "description": "",
+  "description": "n8n integration for abrechnung 🧾",
   "keywords": [
     "n8n-community-node-package"
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://reiseabrechner.de",
   "author": {
-    "name": "",
-    "email": ""
+    "name": "David",
+    "email": "kontakt@reiseabrechner.de"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/<...>/n8n-nodes-<...>.git"
+    "url": "https://github.com/david-loe/n8n-nodes-abrechnung.git"
   },
   "engines": {
     "node": ">=18.10",
@@ -54,5 +54,8 @@
   },
   "peerDependencies": {
     "n8n-workflow": "*"
+  },
+  "dependencies": {
+    "@devlikeapro/n8n-openapi-node": "^0.1.4"
   }
 }
