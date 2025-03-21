@@ -8,7 +8,7 @@ services:
       - DB_POSTGRESDB_USER=${DB_POSTGRESDB_USER}
       - DB_POSTGRESDB_PASSWORD=${DB_POSTGRESDB_PASSWORD}
     volumes:
-      - n8n_data:/home/node/.n8
+      - n8n_data:/home/node/.n8n
       - ./dist:/home/node/.n8n/custom
 
     ports:
