@@ -308,6 +308,10 @@
 					},
 					"fk": {
 						"properties": {
+							"httpBearer": {
+								"type": "string",
+								"nullable": true
+							},
 							"oidc": {
 								"type": "string",
 								"nullable": true
@@ -825,6 +829,10 @@
 					},
 					"fk": {
 						"properties": {
+							"httpBearer": {
+								"type": "string",
+								"nullable": true
+							},
 							"oidc": {
 								"type": "string",
 								"nullable": true
@@ -1191,6 +1199,9 @@
 					},
 					"fk": {
 						"properties": {
+							"httpBearer": {
+								"type": "string"
+							},
 							"oidc": {
 								"type": "string"
 							},
@@ -1508,6 +1519,9 @@
 					},
 					"fk": {
 						"properties": {
+							"httpBearer": {
+								"type": "string"
+							},
 							"oidc": {
 								"type": "string"
 							},
@@ -1688,6 +1702,24 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IdDocument": {
+				"anyOf": [
+					{
+						"$ref": "#/components/schemas/_id"
+					},
+					{
+						"properties": {
+							"_id": {
+								"$ref": "#/components/schemas/_id"
+							}
+						},
+						"required": [
+							"_id"
+						],
+						"type": "object"
+					}
+				]
+			},
 			"DeleteResult": {
 				"properties": {
 					"acknowledged": {
@@ -1779,24 +1811,6 @@
 					}
 				},
 				"type": "object"
-			},
-			"IdDocument": {
-				"anyOf": [
-					{
-						"$ref": "#/components/schemas/_id"
-					},
-					{
-						"properties": {
-							"_id": {
-								"$ref": "#/components/schemas/_id"
-							}
-						},
-						"required": [
-							"_id"
-						],
-						"type": "object"
-					}
-				]
 			},
 			"Place": {
 				"properties": {
@@ -7600,6 +7614,10 @@
 			}
 		},
 		"securitySchemes": {
+			"httpBearer": {
+				"type": "http",
+				"scheme": "bearer"
+			},
 			"cookieAuth": {
 				"type": "apiKey",
 				"name": "abrechnung",
@@ -7618,7 +7636,7 @@
 	},
 	"info": {
 		"title": "abrechnung-backend",
-		"version": "1.6.0",
+		"version": "1.6.1",
 		"contact": {}
 	},
 	"paths": {
@@ -7645,9 +7663,17 @@
 						}
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -7657,7 +7683,7 @@
 		},
 		"/user/token": {
 			"get": {
-				"operationId": "GetToken",
+				"operationId": "GetUploadToken",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -7676,9 +7702,17 @@
 						}
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -7686,15 +7720,23 @@
 				"parameters": []
 			},
 			"delete": {
-				"operationId": "DeleteToken",
+				"operationId": "DeleteUploadToken",
 				"responses": {
 					"204": {
 						"description": "No content"
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -7702,7 +7744,7 @@
 				"parameters": []
 			},
 			"post": {
-				"operationId": "PostToken",
+				"operationId": "PostUploadToken",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -7783,9 +7825,17 @@
 						}
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -7818,9 +7868,17 @@
 						}
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -7863,9 +7921,17 @@
 						}
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -7896,7 +7962,7 @@
 		},
 		"/user/subscription": {
 			"post": {
-				"operationId": "Subscribe",
+				"operationId": "PostPushNotificationSubscription",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -7921,9 +7987,17 @@
 						}
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -7941,9 +8015,54 @@
 				}
 			}
 		},
+		"/user/httpBearer": {
+			"post": {
+				"operationId": "GenOwnApiKey",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"result": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"result",
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
+							"user"
+						]
+					}
+				],
+				"parameters": []
+			}
+		},
 		"/users": {
 			"get": {
-				"operationId": "GetUsers",
+				"operationId": "GetOnlyNames",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -7956,9 +8075,18 @@
 						}
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user",
+							"approve/travel"
+						]
+					},
+					{
+						"httpBearer": [
 							"user",
 							"approve/travel"
 						]
@@ -7970,7 +8098,19 @@
 						]
 					},
 					{
+						"httpBearer": [
+							"user",
+							"examine/travel"
+						]
+					},
+					{
 						"cookieAuth": [
+							"user",
+							"examine/expenseReport"
+						]
+					},
+					{
+						"httpBearer": [
 							"user",
 							"examine/expenseReport"
 						]
@@ -7982,13 +8122,31 @@
 						]
 					},
 					{
+						"httpBearer": [
+							"user",
+							"examine/healthCareCost"
+						]
+					},
+					{
 						"cookieAuth": [
 							"user",
 							"confirm/healthCareCost"
 						]
 					},
 					{
+						"httpBearer": [
+							"user",
+							"confirm/healthCareCost"
+						]
+					},
+					{
 						"cookieAuth": [
+							"user",
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"user",
 							"admin"
 						]
@@ -8068,7 +8226,7 @@
 		},
 		"/admin/user": {
 			"get": {
-				"operationId": "GetUser",
+				"operationId": "Get",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8084,6 +8242,11 @@
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -8160,7 +8323,7 @@
 				]
 			},
 			"post": {
-				"operationId": "PostUser",
+				"operationId": "Post",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8190,6 +8353,11 @@
 						"cookieAuth": [
 							"admin"
 						]
+					},
+					{
+						"httpBearer": [
+							"admin"
+						]
 					}
 				],
 				"parameters": [],
@@ -8205,7 +8373,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "DeleteUser",
+				"operationId": "Delete",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8223,6 +8391,11 @@
 						"cookieAuth": [
 							"admin"
 						]
+					},
+					{
+						"httpBearer": [
+							"admin"
+						]
 					}
 				],
 				"parameters": [
@@ -8237,9 +8410,69 @@
 				]
 			}
 		},
+		"/admin/user/httpBearer": {
+			"post": {
+				"operationId": "GenAnyApiKey",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"result": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"result",
+										"message"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"userId": {
+										"$ref": "#/components/schemas/IdDocument"
+									}
+								},
+								"required": [
+									"userId"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/admin/user/bulk": {
 			"post": {
-				"operationId": "PostManyProjects",
+				"operationId": "PostMany",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8272,6 +8505,11 @@
 						"cookieAuth": [
 							"admin"
 						]
+					},
+					{
+						"httpBearer": [
+							"admin"
+						]
 					}
 				],
 				"parameters": [],
@@ -8292,7 +8530,7 @@
 		},
 		"/admin/user/merge": {
 			"post": {
-				"operationId": "MergeUsers",
+				"operationId": "Merge",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8338,6 +8576,11 @@
 						"cookieAuth": [
 							"admin"
 						]
+					},
+					{
+						"httpBearer": [
+							"admin"
+						]
 					}
 				],
 				"parameters": [
@@ -8376,7 +8619,7 @@
 		},
 		"/admin/user/form": {
 			"get": {
-				"operationId": "GetUserForm",
+				"operationId": "GetForm",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8400,6 +8643,11 @@
 						"cookieAuth": [
 							"admin"
 						]
+					},
+					{
+						"httpBearer": [
+							"admin"
+						]
 					}
 				],
 				"parameters": []
@@ -8407,12 +8655,15 @@
 		},
 		"/upload/new": {
 			"get": {
-				"operationId": "UploadPage",
+				"operationId": "GetUploadPage",
 				"responses": {
 					"200": {
 						"description": ""
 					}
 				},
+				"tags": [
+					"Upload"
+				],
 				"security": [],
 				"parameters": [
 					{
@@ -8442,12 +8693,15 @@
 				]
 			},
 			"post": {
-				"operationId": "Upload",
+				"operationId": "PostFiles",
 				"responses": {
 					"204": {
 						"description": "No content"
 					}
 				},
+				"tags": [
+					"Upload"
+				],
 				"security": [],
 				"parameters": [
 					{
@@ -8500,7 +8754,7 @@
 		},
 		"/travel": {
 			"get": {
-				"operationId": "GetTravel",
+				"operationId": "GetOwn",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8513,9 +8767,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -8613,7 +8875,7 @@
 				]
 			},
 			"delete": {
-				"operationId": "DeleteTravel",
+				"operationId": "DeleteOwn",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8626,9 +8888,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -8645,7 +8915,7 @@
 				]
 			},
 			"post": {
-				"operationId": "PostTravel",
+				"operationId": "Post",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8670,9 +8940,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -8692,7 +8970,7 @@
 		},
 		"/travel/expense": {
 			"post": {
-				"operationId": "PostExpense",
+				"operationId": "PostExpenseToOwn",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8717,9 +8995,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -8746,7 +9032,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "DeleteExpenese",
+				"operationId": "DeleteExpeneseFromOwn",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8771,9 +9057,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -8800,7 +9094,7 @@
 		},
 		"/travel/stage": {
 			"post": {
-				"operationId": "PostStage",
+				"operationId": "PostStageToOwn",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8825,9 +9119,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -8854,7 +9156,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "DeleteStage",
+				"operationId": "DeleteStageFromOwn",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8879,9 +9181,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -8908,7 +9218,7 @@
 		},
 		"/travel/appliedFor": {
 			"post": {
-				"operationId": "PostInWork",
+				"operationId": "PostOwnInWork",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8943,9 +9253,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -8965,7 +9283,7 @@
 		},
 		"/travel/approved": {
 			"post": {
-				"operationId": "PostApproved",
+				"operationId": "PostOwnApproved",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -8990,9 +9308,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -9012,7 +9338,7 @@
 		},
 		"/travel/underExamination": {
 			"post": {
-				"operationId": "PostUnderExamination",
+				"operationId": "PostOwnUnderExamination",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -9047,9 +9373,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -9080,15 +9414,23 @@
 		},
 		"/travel/report": {
 			"get": {
-				"operationId": "GetReport",
+				"operationId": "GetOwnReport",
 				"responses": {
 					"204": {
 						"description": "No content"
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -9120,9 +9462,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -9132,7 +9482,7 @@
 		},
 		"/approve/travel": {
 			"get": {
-				"operationId": "GetTravel",
+				"operationId": "GetToApprove",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -9145,9 +9495,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"approve/travel"
+						]
+					},
+					{
+						"httpBearer": [
 							"approve/travel"
 						]
 					}
@@ -9247,7 +9605,7 @@
 		},
 		"/approve/travel/approved": {
 			"post": {
-				"operationId": "PostApproved",
+				"operationId": "PostAnyBackApproved",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -9272,9 +9630,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"approve/travel"
+						]
+					},
+					{
+						"httpBearer": [
 							"approve/travel"
 						]
 					}
@@ -9327,7 +9693,7 @@
 		},
 		"/approve/travel/rejected": {
 			"post": {
-				"operationId": "PostRejected",
+				"operationId": "PostAnyRejected",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -9362,9 +9728,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"approve/travel"
+						]
+					},
+					{
+						"httpBearer": [
 							"approve/travel"
 						]
 					}
@@ -9395,7 +9769,7 @@
 		},
 		"/examine/travel": {
 			"get": {
-				"operationId": "GetTravel",
+				"operationId": "GetToExamine",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -9408,9 +9782,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/travel"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/travel"
 						]
 					}
@@ -9508,7 +9890,7 @@
 				]
 			},
 			"post": {
-				"operationId": "PostTravel",
+				"operationId": "PostAny",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -9533,9 +9915,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/travel"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/travel"
 						]
 					}
@@ -9553,7 +9943,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "DeleteTravel",
+				"operationId": "DeleteAny",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -9566,9 +9956,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/travel"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/travel"
 						]
 					}
@@ -9587,7 +9985,7 @@
 		},
 		"/examine/travel/expense": {
 			"post": {
-				"operationId": "PostExpense",
+				"operationId": "PostExpenseToAny",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -9612,9 +10010,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/travel"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/travel"
 						]
 					}
@@ -9641,7 +10047,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "DeleteExpenese",
+				"operationId": "DeleteExpeneseFromAny",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -9666,9 +10072,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/travel"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/travel"
 						]
 					}
@@ -9695,7 +10109,7 @@
 		},
 		"/examine/travel/stage": {
 			"post": {
-				"operationId": "PostStage",
+				"operationId": "PostStageToAny",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -9720,9 +10134,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/travel"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/travel"
 						]
 					}
@@ -9749,7 +10171,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "DeleteStage",
+				"operationId": "DeleteStageFromAny",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -9774,9 +10196,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/travel"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/travel"
 						]
 					}
@@ -9828,9 +10258,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/travel"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/travel"
 						]
 					}
@@ -9861,7 +10299,7 @@
 		},
 		"/examine/travel/approved": {
 			"post": {
-				"operationId": "PostApproved",
+				"operationId": "PostAnyApproved",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -9886,9 +10324,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/travel"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/travel"
 						]
 					}
@@ -9919,15 +10365,23 @@
 		},
 		"/examine/travel/report": {
 			"get": {
-				"operationId": "GetReport",
+				"operationId": "GetAnyReport",
 				"responses": {
 					"204": {
 						"description": "No content"
 					}
 				},
+				"tags": [
+					"Travel"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/travel"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/travel"
 						]
 					}
@@ -9946,7 +10400,7 @@
 		},
 		"/settings": {
 			"get": {
-				"operationId": "GetSettings",
+				"operationId": "Get",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -9967,9 +10421,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Settings"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -9979,7 +10441,7 @@
 		},
 		"/admin/settings": {
 			"post": {
-				"operationId": "PostUser",
+				"operationId": "Post",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -10004,9 +10466,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Settings"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -10026,7 +10496,7 @@
 		},
 		"/admin/settings/form": {
 			"get": {
-				"operationId": "GetSettingsForm",
+				"operationId": "GetForm",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -10045,9 +10515,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Settings"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -10057,7 +10535,7 @@
 		},
 		"/project": {
 			"get": {
-				"operationId": "GetProject",
+				"operationId": "Get",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -10070,9 +10548,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Project"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -10144,7 +10630,7 @@
 		},
 		"/admin/project": {
 			"get": {
-				"operationId": "GetProject",
+				"operationId": "GetComplete",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -10157,9 +10643,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Project"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -10232,7 +10726,7 @@
 				]
 			},
 			"post": {
-				"operationId": "PostProject",
+				"operationId": "Post",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -10257,9 +10751,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Project"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -10277,7 +10779,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "DeleteProject",
+				"operationId": "Delete",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -10290,9 +10792,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Project"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -10311,7 +10821,7 @@
 		},
 		"/admin/project/bulk": {
 			"post": {
-				"operationId": "PostManyProjects",
+				"operationId": "PostMany",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -10339,9 +10849,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Project"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -10364,7 +10882,7 @@
 		},
 		"/admin/project/form": {
 			"get": {
-				"operationId": "GetProjectForm",
+				"operationId": "GetForm",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -10383,9 +10901,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Project"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -10395,7 +10921,7 @@
 		},
 		"/organisation": {
 			"get": {
-				"operationId": "GetOrganisation",
+				"operationId": "Get",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -10408,9 +10934,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Organisation"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -10488,7 +11022,7 @@
 		},
 		"/admin/organisation": {
 			"get": {
-				"operationId": "GetOrganisation",
+				"operationId": "GetComplete",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -10501,9 +11035,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Organisation"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -10579,7 +11121,7 @@
 				]
 			},
 			"post": {
-				"operationId": "PostVehicleRegistration",
+				"operationId": "Post",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -10604,9 +11146,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Organisation"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -10624,7 +11174,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "DeleteOrganisation",
+				"operationId": "Delete",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -10637,9 +11187,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Organisation"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -10658,7 +11216,7 @@
 		},
 		"/admin/organisation/bulk": {
 			"post": {
-				"operationId": "PostManyProjects",
+				"operationId": "PostMany",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -10686,9 +11244,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Organisation"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -10711,7 +11277,7 @@
 		},
 		"/admin/organisation/form": {
 			"get": {
-				"operationId": "GetOrganisationForm",
+				"operationId": "GetForm",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -10730,9 +11296,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Organisation"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -10742,7 +11316,7 @@
 		},
 		"/healthInsurance": {
 			"get": {
-				"operationId": "GetHealthInsurance",
+				"operationId": "Get",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -10755,9 +11329,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Heath Insurance"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -10829,7 +11411,7 @@
 		},
 		"/admin/healthInsurance": {
 			"post": {
-				"operationId": "PostHealthInsurance",
+				"operationId": "Post",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -10854,9 +11436,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Heath Insurance"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -10874,7 +11464,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "DeleteHealthInsurance",
+				"operationId": "Delete",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -10887,9 +11477,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Heath Insurance"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -10908,7 +11506,7 @@
 		},
 		"/admin/healthInsurance/bulk": {
 			"post": {
-				"operationId": "PostManyProjects",
+				"operationId": "PostMany",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -10936,9 +11534,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Heath Insurance"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -10961,7 +11567,7 @@
 		},
 		"/admin/healthInsurance/form": {
 			"get": {
-				"operationId": "GetHealthInsuranceForm",
+				"operationId": "GetForm",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -10980,9 +11586,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Heath Insurance"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -10992,7 +11606,7 @@
 		},
 		"/healthCareCost": {
 			"get": {
-				"operationId": "GetHealthCareCost",
+				"operationId": "GetOwn",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -11005,9 +11619,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -11093,7 +11715,7 @@
 				]
 			},
 			"delete": {
-				"operationId": "DeleteHealthCareCost",
+				"operationId": "DeleteOwn",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -11106,9 +11728,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -11127,7 +11757,7 @@
 		},
 		"/healthCareCost/expense": {
 			"post": {
-				"operationId": "PostExpense",
+				"operationId": "PostExpenseToOwn",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -11152,9 +11782,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -11181,7 +11819,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "DeleteExpenese",
+				"operationId": "DeleteExpeneseFromOwn",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -11206,9 +11844,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -11235,7 +11881,7 @@
 		},
 		"/healthCareCost/inWork": {
 			"post": {
-				"operationId": "PostInWork",
+				"operationId": "PostOwnInWork",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -11260,9 +11906,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -11299,7 +11953,7 @@
 		},
 		"/healthCareCost/underExamination": {
 			"post": {
-				"operationId": "PostUnderExamination",
+				"operationId": "PostOwnUnderExamination",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -11334,9 +11988,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -11367,15 +12029,23 @@
 		},
 		"/healthCareCost/report": {
 			"get": {
-				"operationId": "GetReport",
+				"operationId": "GetReportFromOwn",
 				"responses": {
 					"204": {
 						"description": "No content"
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -11407,9 +12077,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -11419,7 +12097,7 @@
 		},
 		"/examine/healthCareCost": {
 			"get": {
-				"operationId": "GetHealthCareCost",
+				"operationId": "GetToExamine",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -11432,9 +12110,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/healthCareCost"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/healthCareCost"
 						]
 					}
@@ -11520,7 +12206,7 @@
 				]
 			},
 			"delete": {
-				"operationId": "DeleteHealthCareCost",
+				"operationId": "DeleteAny",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -11533,9 +12219,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/healthCareCost"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/healthCareCost"
 						]
 					}
@@ -11554,7 +12248,7 @@
 		},
 		"/examine/healthCareCost/expense": {
 			"post": {
-				"operationId": "PostExpense",
+				"operationId": "PostExpenseToAny",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -11579,9 +12273,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/healthCareCost"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/healthCareCost"
 						]
 					}
@@ -11608,7 +12310,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "DeleteExpenese",
+				"operationId": "DeleteExpenseFromAny",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -11633,9 +12335,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/healthCareCost"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/healthCareCost"
 						]
 					}
@@ -11687,9 +12397,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/healthCareCost"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/healthCareCost"
 						]
 					}
@@ -11745,9 +12463,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/healthCareCost"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/healthCareCost"
 						]
 					}
@@ -11790,15 +12516,23 @@
 		},
 		"/examine/healthCareCost/report": {
 			"get": {
-				"operationId": "GetReport",
+				"operationId": "GetunderExaminationByInsuranceReport",
 				"responses": {
 					"204": {
 						"description": "No content"
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/healthCareCost"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/healthCareCost"
 						]
 					}
@@ -11830,9 +12564,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/healthCareCost"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/healthCareCost"
 						]
 					}
@@ -11910,7 +12652,7 @@
 		},
 		"/confirm/healthCareCost": {
 			"get": {
-				"operationId": "GetHealthCareCost",
+				"operationId": "GetHealthCareCostToConfirm",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -11923,9 +12665,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"confirm/healthCareCost"
+						]
+					},
+					{
+						"httpBearer": [
 							"confirm/healthCareCost"
 						]
 					}
@@ -12011,7 +12761,7 @@
 				]
 			},
 			"delete": {
-				"operationId": "DeleteHealthCareCost",
+				"operationId": "DeleteAnyConfirm",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -12024,9 +12774,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"confirm/healthCareCost"
+						]
+					},
+					{
+						"httpBearer": [
 							"confirm/healthCareCost"
 						]
 					}
@@ -12070,9 +12828,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"confirm/healthCareCost"
+						]
+					},
+					{
+						"httpBearer": [
 							"confirm/healthCareCost"
 						]
 					}
@@ -12107,15 +12873,23 @@
 		},
 		"/confirm/healthCareCost/report": {
 			"get": {
-				"operationId": "GetReport",
+				"operationId": "GetConfirmedReport",
 				"responses": {
 					"204": {
 						"description": "No content"
 					}
 				},
+				"tags": [
+					"Health Care Cost"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"confirm/healthCareCost"
+						]
+					},
+					{
+						"httpBearer": [
 							"confirm/healthCareCost"
 						]
 					}
@@ -12134,7 +12908,7 @@
 		},
 		"/expenseReport": {
 			"get": {
-				"operationId": "GetExpenseReport",
+				"operationId": "GetOwn",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -12147,9 +12921,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Expense Report"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -12233,7 +13015,7 @@
 				]
 			},
 			"delete": {
-				"operationId": "DeleteExpenseReport",
+				"operationId": "DeleteOwn",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -12246,9 +13028,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Expense Report"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -12267,7 +13057,7 @@
 		},
 		"/expenseReport/expense": {
 			"post": {
-				"operationId": "PostExpense",
+				"operationId": "PostExpenseToOwn",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -12292,9 +13082,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Expense Report"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -12321,7 +13119,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "DeleteExpenese",
+				"operationId": "DeleteExpenseFromOwn",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -12346,9 +13144,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Expense Report"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -12375,7 +13181,7 @@
 		},
 		"/expenseReport/inWork": {
 			"post": {
-				"operationId": "PostInWork",
+				"operationId": "PostOwnInWork",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -12400,9 +13206,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Expense Report"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -12436,7 +13250,7 @@
 		},
 		"/expenseReport/underExamination": {
 			"post": {
-				"operationId": "PostUnderExamination",
+				"operationId": "PostOwnUnderExamination",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -12471,9 +13285,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Expense Report"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -12504,15 +13326,23 @@
 		},
 		"/expenseReport/report": {
 			"get": {
-				"operationId": "GetReport",
+				"operationId": "GetReportForOwn",
 				"responses": {
 					"204": {
 						"description": "No content"
 					}
 				},
+				"tags": [
+					"Expense Report"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -12544,9 +13374,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Expense Report"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -12556,7 +13394,7 @@
 		},
 		"/examine/expenseReport": {
 			"get": {
-				"operationId": "GetExpenseReport",
+				"operationId": "GetToExamine",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -12569,9 +13407,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Expense Report"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/expenseReport"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/expenseReport"
 						]
 					}
@@ -12655,7 +13501,7 @@
 				]
 			},
 			"delete": {
-				"operationId": "DeleteExpenseReport",
+				"operationId": "Delete",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -12668,9 +13514,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Expense Report"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/expenseReport"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/expenseReport"
 						]
 					}
@@ -12689,7 +13543,7 @@
 		},
 		"/examine/expenseReport/expense": {
 			"post": {
-				"operationId": "PostExpense",
+				"operationId": "PostExpenseToAny",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -12714,9 +13568,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Expense Report"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/expenseReport"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/expenseReport"
 						]
 					}
@@ -12743,7 +13605,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "DeleteExpenese",
+				"operationId": "DeleteExpenseFromAny",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -12768,9 +13630,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Expense Report"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/expenseReport"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/expenseReport"
 						]
 					}
@@ -12822,9 +13692,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Expense Report"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/expenseReport"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/expenseReport"
 						]
 					}
@@ -12889,9 +13767,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Expense Report"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/expenseReport"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/expenseReport"
 						]
 					}
@@ -12928,9 +13814,17 @@
 						"description": "No content"
 					}
 				},
+				"tags": [
+					"Expense Report"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"examine/expenseReport"
+						]
+					},
+					{
+						"httpBearer": [
 							"examine/expenseReport"
 						]
 					}
@@ -12949,15 +13843,23 @@
 		},
 		"/documentFile": {
 			"get": {
-				"operationId": "GetDocumentFile",
+				"operationId": "GetOwn",
 				"responses": {
 					"200": {
 						"description": ""
 					}
 				},
+				"tags": [
+					"Document File"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -12974,7 +13876,7 @@
 				]
 			},
 			"delete": {
-				"operationId": "DeleteDocumentFile",
+				"operationId": "DeleteOwn",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -12987,9 +13889,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Document File"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -13008,7 +13918,7 @@
 		},
 		"/examine/documentFile": {
 			"get": {
-				"operationId": "GetDocumentFile",
+				"operationId": "GetAny",
 				"responses": {
 					"200": {
 						"description": ""
@@ -13022,13 +13932,31 @@
 						]
 					},
 					{
+						"httpBearer": [
+							"user",
+							"examine/travel"
+						]
+					},
+					{
 						"cookieAuth": [
 							"user",
 							"examine/expenseReport"
 						]
 					},
 					{
+						"httpBearer": [
+							"user",
+							"examine/expenseReport"
+						]
+					},
+					{
 						"cookieAuth": [
+							"user",
+							"examine/healthCareCost"
+						]
+					},
+					{
+						"httpBearer": [
 							"user",
 							"examine/healthCareCost"
 						]
@@ -13046,7 +13974,7 @@
 				]
 			},
 			"delete": {
-				"operationId": "DeleteDocumentFile",
+				"operationId": "DeleteAny",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -13067,13 +13995,31 @@
 						]
 					},
 					{
+						"httpBearer": [
+							"user",
+							"examine/travel"
+						]
+					},
+					{
 						"cookieAuth": [
 							"user",
 							"examine/expenseReport"
 						]
 					},
 					{
+						"httpBearer": [
+							"user",
+							"examine/expenseReport"
+						]
+					},
+					{
 						"cookieAuth": [
+							"user",
+							"examine/healthCareCost"
+						]
+					},
+					{
+						"httpBearer": [
 							"user",
 							"examine/healthCareCost"
 						]
@@ -13093,7 +14039,7 @@
 		},
 		"/displaySettings": {
 			"get": {
-				"operationId": "GetDisplaySettings",
+				"operationId": "Get",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -13114,13 +14060,16 @@
 						}
 					}
 				},
+				"tags": [
+					"Display Settings"
+				],
 				"security": [],
 				"parameters": []
 			}
 		},
 		"/admin/displaySettings": {
 			"post": {
-				"operationId": "PostDisplaySettings",
+				"operationId": "Post",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -13145,9 +14094,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Display Settings"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -13167,7 +14124,7 @@
 		},
 		"/admin/displaySettings/form": {
 			"get": {
-				"operationId": "GetDisplaySettingsForm",
+				"operationId": "GetForm",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -13186,9 +14143,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Display Settings"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -13198,7 +14163,7 @@
 		},
 		"/currency": {
 			"get": {
-				"operationId": "GetCurrency",
+				"operationId": "Get",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -13211,9 +14176,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Currency"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -13287,7 +14260,7 @@
 		},
 		"/admin/currency": {
 			"post": {
-				"operationId": "PostCurrency",
+				"operationId": "Post",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -13312,9 +14285,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Currency"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -13332,7 +14313,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "DeleteCurrency",
+				"operationId": "Delete",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -13345,9 +14326,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Currency"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -13366,7 +14355,7 @@
 		},
 		"/admin/currency/bulk": {
 			"post": {
-				"operationId": "PostManyProjects",
+				"operationId": "PostMany",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -13394,9 +14383,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Currency"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -13419,7 +14416,7 @@
 		},
 		"/admin/currency/form": {
 			"get": {
-				"operationId": "GetCurrencyForm",
+				"operationId": "GetForm",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -13438,9 +14435,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Currency"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -13450,7 +14455,7 @@
 		},
 		"/country": {
 			"get": {
-				"operationId": "GetCountry",
+				"operationId": "Get",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -13463,9 +14468,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Country"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -13570,9 +14583,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Country"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"user"
+						]
+					},
+					{
+						"httpBearer": [
 							"user"
 						]
 					}
@@ -13582,7 +14603,7 @@
 		},
 		"/admin/country": {
 			"post": {
-				"operationId": "PostCountry",
+				"operationId": "Post",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -13607,9 +14628,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Country"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -13627,7 +14656,7 @@
 				}
 			},
 			"delete": {
-				"operationId": "DeleteCountry",
+				"operationId": "Delete",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -13640,9 +14669,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Country"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -13661,7 +14698,7 @@
 		},
 		"/admin/country/bulk": {
 			"post": {
-				"operationId": "PostManyProjects",
+				"operationId": "PostMany",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -13689,9 +14726,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Country"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -13714,7 +14759,7 @@
 		},
 		"/admin/country/form": {
 			"get": {
-				"operationId": "GetCountryForm",
+				"operationId": "GetForm",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -13733,9 +14778,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Country"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -13745,7 +14798,7 @@
 		},
 		"/admin/connectionSettings": {
 			"get": {
-				"operationId": "GetConnectionSettings",
+				"operationId": "Get",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -13766,9 +14819,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Connection Settings"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -13776,7 +14837,7 @@
 				"parameters": []
 			},
 			"post": {
-				"operationId": "PostConnectionSettings",
+				"operationId": "Post",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -13801,9 +14862,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Connection Settings"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -13823,7 +14892,7 @@
 		},
 		"/admin/connectionSettings/form": {
 			"get": {
-				"operationId": "GetConnectionSettingsForm",
+				"operationId": "GetForm",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -13842,9 +14911,17 @@
 						}
 					}
 				},
+				"tags": [
+					"Connection Settings"
+				],
 				"security": [
 					{
 						"cookieAuth": [
+							"admin"
+						]
+					},
+					{
+						"httpBearer": [
 							"admin"
 						]
 					}
@@ -13865,6 +14942,9 @@
 				},
 				"description": "Provides the authentication cookie.",
 				"summary": "Login using LDAP",
+				"tags": [
+					"Auth"
+				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -13903,6 +14983,9 @@
 					}
 				},
 				"summary": "Redirecting to Microsoft login",
+				"tags": [
+					"Auth"
+				],
 				"security": [],
 				"parameters": [
 					{
@@ -13929,6 +15012,9 @@
 				},
 				"description": "Provides the authentication cookie.",
 				"summary": "Microsoft login endpoint",
+				"tags": [
+					"Auth"
+				],
 				"security": [],
 				"parameters": []
 			}
@@ -13946,6 +15032,9 @@
 				},
 				"description": "Send a magiclogin email to the destination email address.",
 				"summary": "Send login email",
+				"tags": [
+					"Auth"
+				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -13984,6 +15073,9 @@
 				},
 				"description": "Provides the authentication cookie.",
 				"summary": "Email login endpoint",
+				"tags": [
+					"Auth"
+				],
 				"security": [],
 				"parameters": [
 					{
@@ -14009,6 +15101,9 @@
 					}
 				},
 				"summary": "Redirecting to OIDC login",
+				"tags": [
+					"Auth"
+				],
 				"security": [],
 				"parameters": [
 					{
@@ -14034,6 +15129,9 @@
 					}
 				},
 				"summary": "OIDC login callback endpoint",
+				"tags": [
+					"Auth"
+				],
 				"security": [],
 				"parameters": []
 			}
@@ -14048,9 +15146,15 @@
 				},
 				"description": "Logout and delete session",
 				"summary": "Logout",
+				"tags": [
+					"Auth"
+				],
 				"security": [
 					{
 						"cookieAuth": []
+					},
+					{
+						"httpBearer": []
 					}
 				],
 				"parameters": []
@@ -14066,9 +15170,15 @@
 				},
 				"description": "Empty method",
 				"summary": "Check if request is authenticated",
+				"tags": [
+					"Auth"
+				],
 				"security": [
 					{
 						"cookieAuth": []
+					},
+					{
+						"httpBearer": []
 					}
 				],
 				"parameters": []
