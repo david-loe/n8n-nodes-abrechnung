@@ -1014,11 +1014,13 @@
 					"limit": {
 						"type": "integer",
 						"format": "int32",
-						"minimum": 1
+						"default": 0,
+						"minimum": 0
 					},
 					"page": {
 						"type": "integer",
 						"format": "int32",
+						"default": 1,
 						"minimum": 1
 					},
 					"_id": {
@@ -3012,11 +3014,13 @@
 					"limit": {
 						"type": "integer",
 						"format": "int32",
-						"minimum": 1
+						"default": 0,
+						"minimum": 0
 					},
 					"page": {
 						"type": "integer",
 						"format": "int32",
+						"default": 1,
 						"minimum": 1
 					},
 					"_id": {
@@ -5103,6 +5107,20 @@
 									"none"
 								]
 							},
+							"toleranceStageDatesToApprovedTravelDates": {
+								"type": "number",
+								"format": "double"
+							},
+							"allowTravelApplicationForThePast": {
+								"type": "boolean"
+							},
+							"allowSpouseRefund": {
+								"type": "boolean"
+							},
+							"maxTravelDayCount": {
+								"type": "number",
+								"format": "double"
+							},
 							"distanceRefunds": {
 								"properties": {
 									"halfCar": {
@@ -5119,20 +5137,6 @@
 									}
 								},
 								"type": "object"
-							},
-							"toleranceStageDatesToApprovedTravelDates": {
-								"type": "number",
-								"format": "double"
-							},
-							"allowTravelApplicationForThePast": {
-								"type": "boolean"
-							},
-							"allowSpouseRefund": {
-								"type": "boolean"
-							},
-							"maxTravelDayCount": {
-								"type": "number",
-								"format": "double"
 							}
 						},
 						"type": "object"
@@ -5276,11 +5280,13 @@
 					"limit": {
 						"type": "integer",
 						"format": "int32",
-						"minimum": 1
+						"default": 0,
+						"minimum": 0
 					},
 					"page": {
 						"type": "integer",
 						"format": "int32",
+						"default": 1,
 						"minimum": 1
 					},
 					"_id": {
@@ -5345,11 +5351,13 @@
 					"limit": {
 						"type": "integer",
 						"format": "int32",
-						"minimum": 1
+						"default": 0,
+						"minimum": 0
 					},
 					"page": {
 						"type": "integer",
 						"format": "int32",
+						"default": 1,
 						"minimum": 1
 					},
 					"_id": {
@@ -5631,11 +5639,13 @@
 					"limit": {
 						"type": "integer",
 						"format": "int32",
-						"minimum": 1
+						"default": 0,
+						"minimum": 0
 					},
 					"page": {
 						"type": "integer",
 						"format": "int32",
+						"default": 1,
 						"minimum": 1
 					},
 					"_id": {
@@ -5673,9 +5683,6 @@
 			},
 			"SetterPartial_IOrganisation.NoPost_": {
 				"properties": {
-					"website": {
-						"type": "string"
-					},
 					"logo": {
 						"properties": {
 							"data": {
@@ -5719,6 +5726,9 @@
 					"subfolderPath": {
 						"type": "string"
 					},
+					"website": {
+						"type": "string"
+					},
 					"name": {
 						"type": "string"
 					},
@@ -5733,9 +5743,6 @@
 			},
 			"SetterPartial_Omit_IOrganisation.logo_.NoPost_": {
 				"properties": {
-					"website": {
-						"type": "string"
-					},
 					"companyNumber": {
 						"type": "string"
 					},
@@ -5749,6 +5756,9 @@
 						"type": "string"
 					},
 					"subfolderPath": {
+						"type": "string"
+					},
+					"website": {
 						"type": "string"
 					},
 					"name": {
@@ -5814,11 +5824,13 @@
 					"limit": {
 						"type": "integer",
 						"format": "int32",
-						"minimum": 1
+						"default": 0,
+						"minimum": 0
 					},
 					"page": {
 						"type": "integer",
 						"format": "int32",
+						"default": 1,
 						"minimum": 1
 					},
 					"_id": {
@@ -6122,11 +6134,13 @@
 					"limit": {
 						"type": "integer",
 						"format": "int32",
-						"minimum": 1
+						"default": 0,
+						"minimum": 0
 					},
 					"page": {
 						"type": "integer",
 						"format": "int32",
+						"default": 1,
 						"minimum": 1
 					},
 					"_id": {
@@ -6533,11 +6547,13 @@
 					"limit": {
 						"type": "integer",
 						"format": "int32",
-						"minimum": 1
+						"default": 0,
+						"minimum": 0
 					},
 					"page": {
 						"type": "integer",
 						"format": "int32",
+						"default": 1,
 						"minimum": 1
 					},
 					"_id": {
@@ -6821,11 +6837,13 @@
 					"limit": {
 						"type": "integer",
 						"format": "int32",
-						"minimum": 1
+						"default": 0,
+						"minimum": 0
 					},
 					"page": {
 						"type": "integer",
 						"format": "int32",
+						"default": 1,
 						"minimum": 1
 					},
 					"_id": {
@@ -7147,11 +7165,13 @@
 					"limit": {
 						"type": "integer",
 						"format": "int32",
-						"minimum": 1
+						"default": 0,
+						"minimum": 0
 					},
 					"page": {
 						"type": "integer",
 						"format": "int32",
+						"default": 1,
 						"minimum": 1
 					},
 					"_id": {
@@ -7621,16 +7641,7 @@
 			"cookieAuth": {
 				"type": "apiKey",
 				"name": "abrechnung",
-				"in": "cookie",
-				"scopes": {
-					"user": "make requests",
-					"approve/travel": "approve travel requests",
-					"examine/travel": "examine travel expense requests",
-					"examine/expenseReport": "examine expense report requests",
-					"examine/healthCareCost": "examine healthcare cost requests",
-					"confirm/healthCareCost": "confirm healthcare cost requests",
-					"admin": "admin"
-				}
+				"in": "cookie"
 			}
 		}
 	},
@@ -8158,9 +8169,10 @@
 						"name": "limit",
 						"required": false,
 						"schema": {
+							"default": 0,
 							"format": "int32",
 							"type": "integer",
-							"minimum": 1
+							"minimum": 0
 						}
 					},
 					{
@@ -8168,6 +8180,7 @@
 						"name": "page",
 						"required": false,
 						"schema": {
+							"default": 1,
 							"format": "int32",
 							"type": "integer",
 							"minimum": 1
@@ -8239,6 +8252,9 @@
 						}
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"cookieAuth": [
@@ -8257,9 +8273,10 @@
 						"name": "limit",
 						"required": false,
 						"schema": {
+							"default": 0,
 							"format": "int32",
 							"type": "integer",
-							"minimum": 1
+							"minimum": 0
 						}
 					},
 					{
@@ -8267,6 +8284,7 @@
 						"name": "page",
 						"required": false,
 						"schema": {
+							"default": 1,
 							"format": "int32",
 							"type": "integer",
 							"minimum": 1
@@ -8348,6 +8366,9 @@
 						}
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"cookieAuth": [
@@ -8386,6 +8407,9 @@
 						}
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"cookieAuth": [
@@ -8437,6 +8461,9 @@
 						}
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"cookieAuth": [
@@ -8500,6 +8527,9 @@
 						}
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"cookieAuth": [
@@ -8571,6 +8601,9 @@
 						}
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"cookieAuth": [
@@ -8638,6 +8671,9 @@
 						}
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [
 					{
 						"cookieAuth": [
@@ -8788,9 +8824,10 @@
 						"name": "limit",
 						"required": false,
 						"schema": {
+							"default": 0,
 							"format": "int32",
 							"type": "integer",
-							"minimum": 1
+							"minimum": 0
 						}
 					},
 					{
@@ -8798,6 +8835,7 @@
 						"name": "page",
 						"required": false,
 						"schema": {
+							"default": 1,
 							"format": "int32",
 							"type": "integer",
 							"minimum": 1
@@ -9416,8 +9454,16 @@
 			"get": {
 				"operationId": "GetOwnReport",
 				"responses": {
-					"204": {
-						"description": "No content"
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/pdf": {
+								"schema": {
+									"type": "string",
+									"format": "byte"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -9516,9 +9562,10 @@
 						"name": "limit",
 						"required": false,
 						"schema": {
+							"default": 0,
 							"format": "int32",
 							"type": "integer",
-							"minimum": 1
+							"minimum": 0
 						}
 					},
 					{
@@ -9526,6 +9573,7 @@
 						"name": "page",
 						"required": false,
 						"schema": {
+							"default": 1,
 							"format": "int32",
 							"type": "integer",
 							"minimum": 1
@@ -9803,9 +9851,10 @@
 						"name": "limit",
 						"required": false,
 						"schema": {
+							"default": 0,
 							"format": "int32",
 							"type": "integer",
-							"minimum": 1
+							"minimum": 0
 						}
 					},
 					{
@@ -9813,6 +9862,7 @@
 						"name": "page",
 						"required": false,
 						"schema": {
+							"default": 1,
 							"format": "int32",
 							"type": "integer",
 							"minimum": 1
@@ -10367,8 +10417,16 @@
 			"get": {
 				"operationId": "GetAnyReport",
 				"responses": {
-					"204": {
-						"description": "No content"
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/pdf": {
+								"schema": {
+									"type": "string",
+									"format": "byte"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -10569,9 +10627,10 @@
 						"name": "limit",
 						"required": false,
 						"schema": {
+							"default": 0,
 							"format": "int32",
 							"type": "integer",
-							"minimum": 1
+							"minimum": 0
 						}
 					},
 					{
@@ -10579,6 +10638,7 @@
 						"name": "page",
 						"required": false,
 						"schema": {
+							"default": 1,
 							"format": "int32",
 							"type": "integer",
 							"minimum": 1
@@ -10664,9 +10724,10 @@
 						"name": "limit",
 						"required": false,
 						"schema": {
+							"default": 0,
 							"format": "int32",
 							"type": "integer",
-							"minimum": 1
+							"minimum": 0
 						}
 					},
 					{
@@ -10674,6 +10735,7 @@
 						"name": "page",
 						"required": false,
 						"schema": {
+							"default": 1,
 							"format": "int32",
 							"type": "integer",
 							"minimum": 1
@@ -10955,9 +11017,10 @@
 						"name": "limit",
 						"required": false,
 						"schema": {
+							"default": 0,
 							"format": "int32",
 							"type": "integer",
-							"minimum": 1
+							"minimum": 0
 						}
 					},
 					{
@@ -10965,6 +11028,7 @@
 						"name": "page",
 						"required": false,
 						"schema": {
+							"default": 1,
 							"format": "int32",
 							"type": "integer",
 							"minimum": 1
@@ -11056,9 +11120,10 @@
 						"name": "limit",
 						"required": false,
 						"schema": {
+							"default": 0,
 							"format": "int32",
 							"type": "integer",
-							"minimum": 1
+							"minimum": 0
 						}
 					},
 					{
@@ -11066,6 +11131,7 @@
 						"name": "page",
 						"required": false,
 						"schema": {
+							"default": 1,
 							"format": "int32",
 							"type": "integer",
 							"minimum": 1
@@ -11350,9 +11416,10 @@
 						"name": "limit",
 						"required": false,
 						"schema": {
+							"default": 0,
 							"format": "int32",
 							"type": "integer",
-							"minimum": 1
+							"minimum": 0
 						}
 					},
 					{
@@ -11360,6 +11427,7 @@
 						"name": "page",
 						"required": false,
 						"schema": {
+							"default": 1,
 							"format": "int32",
 							"type": "integer",
 							"minimum": 1
@@ -11640,9 +11708,10 @@
 						"name": "limit",
 						"required": false,
 						"schema": {
+							"default": 0,
 							"format": "int32",
 							"type": "integer",
-							"minimum": 1
+							"minimum": 0
 						}
 					},
 					{
@@ -11650,6 +11719,7 @@
 						"name": "page",
 						"required": false,
 						"schema": {
+							"default": 1,
 							"format": "int32",
 							"type": "integer",
 							"minimum": 1
@@ -12031,8 +12101,16 @@
 			"get": {
 				"operationId": "GetReportFromOwn",
 				"responses": {
-					"204": {
-						"description": "No content"
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/pdf": {
+								"schema": {
+									"type": "string",
+									"format": "byte"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -12131,9 +12209,10 @@
 						"name": "limit",
 						"required": false,
 						"schema": {
+							"default": 0,
 							"format": "int32",
 							"type": "integer",
-							"minimum": 1
+							"minimum": 0
 						}
 					},
 					{
@@ -12141,6 +12220,7 @@
 						"name": "page",
 						"required": false,
 						"schema": {
+							"default": 1,
 							"format": "int32",
 							"type": "integer",
 							"minimum": 1
@@ -12518,8 +12598,16 @@
 			"get": {
 				"operationId": "GetunderExaminationByInsuranceReport",
 				"responses": {
-					"204": {
-						"description": "No content"
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/pdf": {
+								"schema": {
+									"type": "string",
+									"format": "byte"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -12585,9 +12673,10 @@
 						"name": "limit",
 						"required": false,
 						"schema": {
+							"default": 0,
 							"format": "int32",
 							"type": "integer",
-							"minimum": 1
+							"minimum": 0
 						}
 					},
 					{
@@ -12595,6 +12684,7 @@
 						"name": "page",
 						"required": false,
 						"schema": {
+							"default": 1,
 							"format": "int32",
 							"type": "integer",
 							"minimum": 1
@@ -12686,9 +12776,10 @@
 						"name": "limit",
 						"required": false,
 						"schema": {
+							"default": 0,
 							"format": "int32",
 							"type": "integer",
-							"minimum": 1
+							"minimum": 0
 						}
 					},
 					{
@@ -12696,6 +12787,7 @@
 						"name": "page",
 						"required": false,
 						"schema": {
+							"default": 1,
 							"format": "int32",
 							"type": "integer",
 							"minimum": 1
@@ -12875,8 +12967,16 @@
 			"get": {
 				"operationId": "GetConfirmedReport",
 				"responses": {
-					"204": {
-						"description": "No content"
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/pdf": {
+								"schema": {
+									"type": "string",
+									"format": "byte"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -12942,9 +13042,10 @@
 						"name": "limit",
 						"required": false,
 						"schema": {
+							"default": 0,
 							"format": "int32",
 							"type": "integer",
-							"minimum": 1
+							"minimum": 0
 						}
 					},
 					{
@@ -12952,6 +13053,7 @@
 						"name": "page",
 						"required": false,
 						"schema": {
+							"default": 1,
 							"format": "int32",
 							"type": "integer",
 							"minimum": 1
@@ -13328,8 +13430,16 @@
 			"get": {
 				"operationId": "GetReportForOwn",
 				"responses": {
-					"204": {
-						"description": "No content"
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/pdf": {
+								"schema": {
+									"type": "string",
+									"format": "byte"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -13428,9 +13538,10 @@
 						"name": "limit",
 						"required": false,
 						"schema": {
+							"default": 0,
 							"format": "int32",
 							"type": "integer",
-							"minimum": 1
+							"minimum": 0
 						}
 					},
 					{
@@ -13438,6 +13549,7 @@
 						"name": "page",
 						"required": false,
 						"schema": {
+							"default": 1,
 							"format": "int32",
 							"type": "integer",
 							"minimum": 1
@@ -13810,8 +13922,16 @@
 			"get": {
 				"operationId": "GetReport",
 				"responses": {
-					"204": {
-						"description": "No content"
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/pdf": {
+								"schema": {
+									"type": "string",
+									"format": "byte"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -13846,7 +13966,15 @@
 				"operationId": "GetOwn",
 				"responses": {
 					"200": {
-						"description": ""
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string",
+									"format": "byte"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -13921,7 +14049,15 @@
 				"operationId": "GetAny",
 				"responses": {
 					"200": {
-						"description": ""
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string",
+									"format": "byte"
+								}
+							}
+						}
 					}
 				},
 				"security": [
@@ -14197,9 +14333,10 @@
 						"name": "limit",
 						"required": false,
 						"schema": {
+							"default": 0,
 							"format": "int32",
 							"type": "integer",
-							"minimum": 1
+							"minimum": 0
 						}
 					},
 					{
@@ -14207,6 +14344,7 @@
 						"name": "page",
 						"required": false,
 						"schema": {
+							"default": 1,
 							"format": "int32",
 							"type": "integer",
 							"minimum": 1
@@ -14489,9 +14627,10 @@
 						"name": "limit",
 						"required": false,
 						"schema": {
+							"default": 0,
 							"format": "int32",
 							"type": "integer",
-							"minimum": 1
+							"minimum": 0
 						}
 					},
 					{
@@ -14499,6 +14638,7 @@
 						"name": "page",
 						"required": false,
 						"schema": {
+							"default": 1,
 							"format": "int32",
 							"type": "integer",
 							"minimum": 1
